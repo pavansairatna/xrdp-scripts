@@ -43,10 +43,9 @@ while [ $# -ge 2 ]; do
     git fetch $1
     shift 2
 done
-$SCRIPTS_DIR/myconfig.sh .
 
 ./bootstrap
-./myconfig.sh
+$SCRIPTS_DIR/myconfig.sh .
 gmake
 sudo gmake install
 sudo $SCRIPTS_DIR/link_exes_and_libs.sh "$TARGET_DIR"
