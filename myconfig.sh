@@ -11,7 +11,8 @@ else
     # xrdp 0.9.16 or earlier
     flags="--enable-xrdpdebug"
 fi
-flags="$flags --enable-fuse --enable-pixman --enable-ipv6 --with-imlib2"
+flags="$flags --enable-fuse --enable-pixman --enable-ipv6"
+#flags="$flags --with-imlib2"
 #flags="$flags --disable-pam"
 #flags="$flags --disable-rfxcodec"
 
@@ -19,6 +20,7 @@ if [ $CC = "g++" ]; then
     CFLAGS="$CFLAGS -g -Werror"
     flags="$flags --disable-neutrinordp"
 else
+#    CFLAGS="$CFLAGS -coverage -Wl,-l,gcov"
     flags="$flags --enable-neutrinordp"
 fi
 exec ./configure $flags
