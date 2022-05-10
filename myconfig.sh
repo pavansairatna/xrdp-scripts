@@ -22,7 +22,9 @@ else
 fi
 flags="$flags --enable-fuse --enable-pixman"
 flags="$flags --enable-ipv6"
-#flags="$flags --with-imlib2"
+flags="$flags --with-imlib2"
+flags="$flags --enable-vsock"
+flags="$flags --enable-static=rfxcodec,libpainter"
 #flags="$flags --disable-pam"
 #flags="$flags --disable-rfxcodec"
 
