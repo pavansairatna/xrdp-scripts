@@ -22,11 +22,19 @@ else
 fi
 flags="$flags --enable-fuse --enable-pixman"
 flags="$flags --enable-ipv6"
+flags="$flags --enable-painter" ; # Shouldn't be necessary
+flags="$flags --enable-jpeg"
 flags="$flags --with-imlib2"
 flags="$flags --enable-vsock"
-flags="$flags --enable-static=rfxcodec,libpainter"
+flags="$flags --with-freetype2"
+#flags="$flags --disable-painter"
+#flags="$flags --disable-static"
+#flags="$flags --disable-pam --enable-kerberos"
+#flags="$flags --disable-pam --enable-pamuserpass"
+#flags="$flags --disable-pam --enable-bsd"
 #flags="$flags --disable-pam"
 #flags="$flags --disable-rfxcodec"
+#flags="$flags --enable-apparmor"
 
 if [ "$CC" = "g++" ]; then
     CFLAGS="$CFLAGS -g -Werror"
