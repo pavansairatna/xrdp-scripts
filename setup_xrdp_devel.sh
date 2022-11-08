@@ -22,8 +22,15 @@ if [ -n "$PACKAGES" ]; then
 fi
 
 # Allow the testuser to read our home directory
-echo "-Setting permissions on home directory"
+echo "- Setting permissions on home directory"
 chmod 751 $HOME || exit $?
+
+# Other changes
+echo "- Setting old scrollbar behaviour"
+cat <<EOF >~/.config/gtk-3.0/settings.ini
+[Settings]
+gtk-primary-button-warps-slider = false
+EOF
 
 # Repos I can write to
 for dir in xrdp xorgxrdp pulseaudio-module-xrdp; do
