@@ -17,8 +17,12 @@ while [ $# -ge 2 ]; do
     shift 2
 done
 if [ -n "$PACKAGES" ]; then
-    echo "- installing development tools"
-    sudo apt install -y $PACKAGES || exit $?
+    if [ -x /usr/bin/apt ]; then
+        echo "- installing development tools"
+        sudo apt install -y $PACKAGES || exit $?
+    else
+        echo "- Can't install$PACKAGES - not a dpkg-based system"
+    fi
 fi
 
 # Allow the testuser to read our home directory
@@ -59,10 +63,14 @@ for dir in NeutrinoRDP; do
     fi
 done
 
-echo "- Installing dependencies"
-sudo xrdp/scripts/install_xrdp_build_dependencies_with_apt.sh max $(dpkg --print-architecture) || exit $?
-sudo xrdp/scripts/install_cppcheck_dependencies_with_apt.sh || exit $?
-sudo xorgxrdp/scripts/install_xorgxrdp_build_dependencies_with_apt.sh $(dpkg --print-architecture) || exit $?
+if [ ! -x /usr/bin/apt ]; then
+    echo "- Can't install xrdp dependencies - not a dpkg-based system"
+else
+    echo "- Installing dependencies"
+    sudo xrdp/scripts/install_xrdp_build_dependencies_with_apt.sh max $(dpkg --print-architecture) || exit $?
+    sudo xrdp/scripts/install_cppcheck_dependencies_with_apt.sh || exit $?
+    sudo xorgxrdp/scripts/install_xorgxrdp_build_dependencies_with_apt.sh $(dpkg --print-architecture) || exit $?
+fi
 
 if [ ! -x /usr/bin/gmake ]; then
     echo "- Setting up gmake link"
@@ -70,8 +78,15 @@ if [ ! -x /usr/bin/gmake ]; then
 fi
 
 echo "- Setting up links to development areas for xorgxrdp"
-sudo ln -sf $HOME/xorgxrdp/module/.libs/libxorgxrdp.so /usr/lib/xorg/modules/libxorgxrdp.so
-sudo ln -sf $HOME/xorgxrdp/xrdpdev/.libs/xrdpdev_drv.so /usr/lib/xorg/modules/drivers/xrdpdev_drv.so
-sudo ln -sf $HOME/xorgxrdp/xrdpkeyb/.libs/xrdpkeyb_drv.so /usr/lib/xorg/modules/input/xrdpkeyb_drv.so
-sudo ln -sf $HOME/xorgxrdp/xrdpmouse/.libs/xrdpmouse_drv.so /usr/lib/xorg/modules/input/xrdpmouse_drv.so
+MODULES_DIR=/usr/lib64/xorg/modules
+if [ ! -d $MODULES_DIR ]; then
+    MODULES_DIR=/usr/lib/xorg/modules
+fi
+sudo ln -sf $HOME/xorgxrdp/module/.libs/libxorgxrdp.so $MODULES_DIR/libxorgxrdp.so
+sudo ln -sf $HOME/xorgxrdp/xrdpdev/.libs/xrdpdev_drv.so $MODULES_DIR/drivers/xrdpdev_drv.so
+sudo ln -sf $HOME/xorgxrdp/xrdpkeyb/.libs/xrdpkeyb_drv.so $MODULES_DIR/input/xrdpkeyb_drv.so
+sudo ln -sf $HOME/xorgxrdp/xrdpmouse/.libs/xrdpmouse_drv.so $MODULES_DIR/input/xrdpmouse_drv.so
+if [ ! -d /etc/X11/xrdp/ ]; then
+    sudo install -dm 755 -o root -g root /etc/X11/xrdp/
+fi
 sudo ln -sf $HOME/xorgxrdp/xrdpdev/xrdp.conf /etc/X11/xrdp/
