@@ -7,7 +7,8 @@ cd ~
 set -- \
     /usr/bin/gvim    vim-gtk3 \
     /usr/bin/meld    meld \
-    /usr/bin/astyle  astyle
+    /usr/bin/astyle  astyle \
+    /usr/share/man/man2/waitpid.2.gz manpages-dev \
 
 PACKAGES=
 while [ $# -ge 2 ]; do
