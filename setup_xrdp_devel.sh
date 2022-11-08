@@ -21,6 +21,10 @@ if [ -n "$PACKAGES" ]; then
     sudo apt install -y $PACKAGES || exit $?
 fi
 
+# Allow the testuser to read our home directory
+echo "-Setting permissions on home directory"
+chmod 751 $HOME || exit $?
+
 # Repos I can write to
 for dir in xrdp xorgxrdp pulseaudio-module-xrdp; do
     if [ ! -d "$dir" ]; then
@@ -34,6 +38,7 @@ for dir in xrdp xorgxrdp pulseaudio-module-xrdp; do
                 ;;
         esac
         cd ..
+        chmod 755 "$dir" || exit $?
     fi
 done
 
@@ -43,6 +48,7 @@ for dir in NeutrinoRDP; do
         echo "- Fetching $dir repo..."
         git clone https://github.com/neutrinolabs/$dir.git || exit $?
         cd ..
+        chmod 755 "$dir" || exit $?
     fi
 done
 
