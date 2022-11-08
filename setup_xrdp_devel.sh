@@ -89,4 +89,4 @@ sudo ln -sf $HOME/xorgxrdp/xrdpmouse/.libs/xrdpmouse_drv.so $MODULES_DIR/input/x
 if [ ! -d /etc/X11/xrdp/ ]; then
     sudo install -dm 755 -o root -g root /etc/X11/xrdp/
 fi
-sudo ln -sf $HOME/xorgxrdp/xrdpdev/xrdp.conf /etc/X11/xrdp/
+sudo ln -sf $HOME/xorgxrdp/xrdpdev/xorg.conf /etc/X11/xrdp/
