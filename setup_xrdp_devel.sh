@@ -4,6 +4,10 @@
 cd ~
 
 # Development tools
+#
+# To get meld icons working over X11 forwarding you might have to install
+# a Mint theme, or set up a link in ~/.icons. No good workaround has
+# been found for this.
 set -- \
     /usr/bin/gvim    vim-gtk3 \
     /usr/bin/meld    meld \
