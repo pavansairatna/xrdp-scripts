@@ -298,9 +298,12 @@ cd $(dirname $0) || exit $?
 if [[ $1 != "--net-ok" || ! -f ./dc.params ]]; then
     echo
     echo "    Make sure the machine :-"
-    echo "    - Has a static IP address"
-    echo "    - Has the FQDN resolving to the static IP in /etc/hosts"
-    echo "    - Has the short name resolving to the static IP in /etc/hosts"
+    echo "    - Has a static IPv4 address"
+    echo "    - Has a static IPv6 address"
+    echo "      (This is so that a dynamic address doesn't get registered for"
+    echo "       the domain controller in DNS)"
+    echo "    - Has the FQDN resolving to the static IPv4 in /etc/hosts"
+    echo "    - Has the short name resolving to the static IPv4 in /etc/hosts"
     echo "    - Has a default route which will be used for all machines"
     echo "    - on a VLAN with no DHCP server."
     echo "    - Has the file $(pwd)/dc.params filled in from the template"
