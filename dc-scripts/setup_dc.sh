@@ -269,6 +269,7 @@ subnet $subnet netmask $netmask {
   option ntp-servers $G_NTP_SERVERS;
   default-lease-time 600;
   max-lease-time 7200;
+}
 EOF
     systemctl stop isc-dhcp-server.service
     systemctl enable --now isc-dhcp-server.service || exit $?
