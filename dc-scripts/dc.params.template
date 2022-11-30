@@ -1,0 +1,19 @@
+#
+# Specifies values for the DC which can't be calculated from
+# the current networking configuration
+#
+# Specify the upstream DNS resolver IP address
+#G_DNS_RESOLVER=192.168.1.1
+
+# List of NTP servers, separated by spaces
+#G_NTP_SERVERS="name or IP
+
+# Password to set for the Administrator account
+G_ADMIN_PASS=Password1
+
+# Low and high DHCP address vales to be distributed by the DHCP server
+#
+# Must be part of the subnet this machine is in
+#G_DHCP_LOW_ADDR=192.168.1.100
+#G_DHCP_HIGH_ADDR=192.168.1.200
+
