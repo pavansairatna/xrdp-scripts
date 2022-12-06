@@ -3,6 +3,16 @@
 
 cd ~
 
+DISTRIBUTION=$(lsb_release -si)
+RELEASE=$(lsb_release -sr)
+
+case "$DISTRIBUTION-$RELEASE" in
+    Ubuntu-22.04)
+        ;;
+    *)  echo "** This script is not tested on $DISTRIBUTION $RELEASE" 2>&2
+        ;;
+esac
+
 # Development tools
 #
 # To get meld icons working over X11 forwarding you might have to install
@@ -63,7 +73,6 @@ for dir in NeutrinoRDP; do
     if [ ! -d "$dir" ]; then
         echo "- Fetching $dir repo..."
         git clone https://github.com/neutrinolabs/$dir.git || exit $?
-        cd ..
         chmod 755 "$dir" || exit $?
     fi
 done
@@ -94,4 +103,14 @@ sudo ln -sf $HOME/xorgxrdp/xrdpmouse/.libs/xrdpmouse_drv.so $MODULES_DIR/input/x
 if [ ! -d /etc/X11/xrdp/ ]; then
     sudo install -dm 755 -o root -g root /etc/X11/xrdp/
 fi
+
 sudo ln -sf $HOME/xorgxrdp/xrdpdev/xorg.conf /etc/X11/xrdp/
+
+case "$DISTRIBUTION-$RELEASE" in
+    Ubuntu-22.04)
+        # Use gcc 12 by default
+        sudo apt install gcc-12 g++-12
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 150 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
+        ;;
+esac
