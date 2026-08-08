@@ -1,0 +1,36 @@
+"""
+Load test against the running server.
+
+Run:
+    uvicorn vector_search.app:app &
+    locust -f benchmarks/locustfile.py --host http://localhost:8000
+
+Then open http://localhost:8089 to set concurrency and start the run,
+or run headless:
+    locust -f benchmarks/locustfile.py --host http://localhost:8000 \
+        --headless -u 50 -r 10 -t 30s
+"""
+
+import random
+from locust import HttpUser, task, between
+
+SAMPLE_QUERIES = [
+    "renewable energy",
+    "how does photosynthesis work",
+    "quantum computing basics",
+    "in-memory databases",
+    "cell biology",
+]
+
+
+class SearchUser(HttpUser):
+    wait_time = between(0.01, 0.1)
+
+    @task
+    def search(self):
+        query = random.choice(SAMPLE_QUERIES)
+        self.client.post("/search", json={"query": query, "top_k": 3})
+
+    @task(1)
+    def health(self):
+        self.client.get("/health")
